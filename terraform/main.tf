@@ -81,7 +81,6 @@ resource "aws_iam_user_policy" "app_policy" {
   })
 }
 
-# Mostrar las nuevas llaves en la consola al terminar
 output "app_access_key" {
   value = aws_iam_access_key.app_user_keys.id
 }

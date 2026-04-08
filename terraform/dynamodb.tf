@@ -45,3 +45,43 @@ resource "aws_dynamodb_table" "ingreso_table" {
     type = "S"
   }
 }
+
+#Tabla de Ahorros (Ordenada por Fecha)
+resource "aws_dynamodb_table" "ahorro-table" {
+  name         = "FondoSeguro_Ahorro" # Corregido el nombre
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "UserId"
+  range_key    = "Fecha" # <--- Orden cronológico de ingresos
+
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
+
+  attribute {
+    name = "Fecha"
+    type = "S"
+  }
+
+  # Tabla de Ahorros Generados (El que nos da la app de capital )
+  resource "aws_dynamodb_table" "ahorro_generado" {
+    name         = "FondoSeguro_Ahorro_Generado"
+    billing_mode = "PAY_PER_REQUEST"
+    hash_key     = "UserId"
+    range_key    = "Fecha"
+  
+    attribute { name = "UserId" type = "S" }
+    attribute { name = "Fecha"  type = "S" }
+  }
+  
+  # Tabla de Ahorros Recomendados (IA)
+  resource "aws_dynamodb_table" "ahorro_recomendado" {
+    name         = "FondoSeguro_Ahorro_Recomendado"
+    billing_mode = "PAY_PER_REQUEST"
+    hash_key     = "UserId"
+    range_key    = "Fecha"
+  
+    attribute { name = "UserId" type = "S" }
+    attribute { name = "Fecha"  type = "S" }
+  }
+}

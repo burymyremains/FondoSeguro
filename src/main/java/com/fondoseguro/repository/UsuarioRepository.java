@@ -8,18 +8,23 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 @Repository
 public class UsuarioRepository {
+
     private final DynamoDbTable<Usuario> usuarioTable;
 
     public UsuarioRepository(DynamoDbEnhancedClient enhancedClient) {
-        // La tabla en AWS se debe llamar "Usuarios"
+        // La tabla debe llamarse "Usuarios" en la consola de AWS
         this.usuarioTable = enhancedClient.table("Usuarios", TableSchema.fromBean(Usuario.class));
     }
 
-    public void guardarUsuario(Usuario usuario) {
+    public void crearOActualizar(Usuario usuario) {
         usuarioTable.putItem(usuario);
     }
 
-    public Usuario obtenerUsuario(String id) {
+    public Usuario obtenerPorId(String id) {
         return usuarioTable.getItem(r -> r.key(k -> k.partitionValue(id)));
+    }
+
+    public void eliminar(String id) {
+        usuarioTable.deleteItem(r -> r.key(k -> k.partitionValue(id)));
     }
 }

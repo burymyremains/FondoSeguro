@@ -102,7 +102,12 @@
             <version>2.20.0</version>
         </dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -1,0 +1,29 @@
+# --- Java / Maven ---
+target/
+*.jar
+*.war
+*.ear
+.mvn/
+mvnw
+mvnw.cmd
+
+# --- IDEs ---
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# --- Docker ---
+.env
+
+# --- Terraform ---
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+
+# --- OS ---
+.DS_Store
+Thumbs.db

@@ -1,0 +1,35 @@
+services:
+  # 1. BACKEND CONECTADO A LA NUBE (AWS REAL)
+  # Úsalo para probar la tabla que creaste con Terraform
+  backend-aws:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - DYNAMODB_TABLE=FondoSeguro_Usuarios
+      # Spring Boot detectará estas variables automáticamente
+
+  # 2. BACKEND CONECTADO A DYNAMO LOCAL
+  # Úsalo para desarrollar rápido sin internet o sin gastar créditos
+  backend-local:
+    build: .
+    ports:
+      - "8081:8080"
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_REGION=us-east-1
+      - DYNAMODB_ENDPOINT=http://dynamodb-local:8000
+    depends_on:
+      - dynamodb-local
+
+  # 3. EL SIMULADOR DE DYNAMODB
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb"

@@ -15,14 +15,19 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 public class Ingreso {
 
     private String ingresoId;    
-    private String usuarioId; 
+    private String userId; 
     private Double monto;
     private String categoria;
     private String descripcion;
     private String fecha;
 
-    @DynamoDbPartitionKey //  fpara AWS
-    public String getingresoId() {
-        return ingresoId;
+    @DynamoDbPartitionKey
+    public String getUserId() {
+         return userId; 
+    }
+
+    @DynamoDbSortKey 
+    public String getFecha(){ 
+        return fecha; 
     }
 }

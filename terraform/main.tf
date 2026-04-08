@@ -12,16 +12,6 @@ provider "aws" {
   region = "us-east-2"
 }
 
-# 3. Recurso de S3
-resource "aws_s3_bucket" "estados_cuenta_bucket" {
-  bucket = "fondoseguro-documentos-${random_id.suffix.hex}"
-  
-  tags = {
-    Name        = "FondoSeguro_Docs"
-    Environment = "Dev"
-  }
-}
-
 # 4. Generador de ID aleatorio
 resource "random_id" "suffix" {
   byte_length = 4

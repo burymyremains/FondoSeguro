@@ -21,8 +21,18 @@ public class Gasto {
     private String descripcion;
     private String fecha;
 
-    @DynamoDbPartitionKey // Marca este campo como la llave primaria en AWS
-    public String getGastoId() {
-        return gastoId;
+
+    /*el id propio en dinamo te permite hacerlo 
+    compuesto entonces se deja como una variable en java mas
+    pero en dinamo solo tomamos el user id y el fecha id 
+    */
+    @DynamoDbPartitionKey 
+    public String getUserId() {
+        return userId; 
+    }
+
+    @DynamoDbSortKey
+    public String getFecha(){ 
+        return fecha; 
     }
 }

@@ -18,7 +18,7 @@ public class TextractService {
         this.textractClient = textractClient;
     }
 
-    //Metodo para ya no usar las instancias S3 de aws y obtner el texto plano
+    //Metodo para obtner el texto plano
 
     public String obtenerTextoDesdeBytes(MultipartFile file) {
         byte[] archivoBytes = file.getBytes();
@@ -39,5 +39,23 @@ public class TextractService {
                 .filter(b -> b.blockType() == BlockType.LINE)
                 .map(Block::text)
                 .collect(Collectors.joining("\n"));
+    }
+
+    public void guardarTextoEnS3(String textoPlano, String nombreOriginal) {
+        String nombreTxt = nombreOriginal.replaceAll("(?i)\\.pdf$", "") + ".txt";
+        
+        PutObjectRequest putRequest = PutObjectRequest.builder()
+                .bucket("fondoseguro-user-txt-info")
+                .key("entradas-ia/" + nombreTxt)
+                .contentType("text/plain")
+                .build();
+
+        s3Client.putObject(putRequest, RequestBody.fromString(textoPlano));
+    }
+
+    // EL METODO QUE LLAMA EL CONTROLLER de paro solo este lol para subir un pdf
+    public void flujoCompleto(MultipartFile file) throws IOException {
+        String texto = obtenerTextoDesdeBytes(file);        
+        guardarTextoEnS3(texto, file.getOriginalFilename());
     }
 }

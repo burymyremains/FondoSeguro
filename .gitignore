@@ -1,33 +1,29 @@
-HELP.md
+# --- Java / Maven ---
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.jar
+*.war
+*.ear
+.mvn/
+mvnw
+mvnw.cmd
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+# --- IDEs ---
+.idea/
 .vscode/
+*.iml
+*.swp
+
+# --- Docker ---
+.env
+
+# --- Terraform ---
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+
+# --- OS ---
+.DS_Store
+Thumbs.db

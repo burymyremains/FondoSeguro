@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 1. BACKEND CONECTADO A LA NUBE (AWS REAL)
   # Úsalo para probar la tabla que creaste con Terraform

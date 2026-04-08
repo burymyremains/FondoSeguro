@@ -1,5 +1,7 @@
 package com.fondoseguro.service;
 
+import software.amazon.awssdk.core.SdkBytes;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.SdkBytes;
@@ -16,25 +18,26 @@ public class TextractService {
         this.textractClient = textractClient;
     }
 
-    public String extraerDatosDirecto(MultipartFile file) throws IOException {
-        // Convertimos el PDF a bytes para enviarlo directamente
-        SdkBytes sourceBytes = SdkBytes.fromInputStream(file.getInputStream());
+    //Metodo para ya no usar las instancias S3 de aws y obtner el texto plano
 
-        AnalyzeDocumentRequest request = AnalyzeDocumentRequest.builder()
-                .document(Document.builder().bytes(sourceBytes).build())
-                .featureTypes(FeatureType.TABLES, FeatureType.FORMS) // Buscamos tablas de gastos
+    public String obtenerTextoDesdeBytes(MultipartFile file) {
+        byte[] archivoBytes = file.getBytes();
+
+        SdkBytes sdkBytes = SdkBytes.fromByteArray(archivoBytes);
+
+        Document miDocumento = Document.builder()
+                .bytes(sdkBytes)
                 .build();
 
-        AnalyzeDocumentResponse response = textractClient.analyzeDocument(request);
+        DetectDocumentTextRequest request = DetectDocumentTextRequest.builder()
+                .document(miDocumento)
+                .build();
 
-        // Aquí solo extraemos lo que nos sirve (ejemplo: montos)
-        StringBuilder datosExtraidos = new StringBuilder();
-        response.blocks().forEach(block -> {
-            if (block.blockType() == BlockType.LINE) {
-                datosExtraidos.append(block.text()).append(" ");
-            }
-        });
+        DetectDocumentTextResponse response = textractClient.detectDocumentText(request);
 
-        return datosExtraidos.toString(); // Esto es lo que le pasarás a la IA
+        return response.blocks().stream()
+                .filter(b -> b.blockType() == BlockType.LINE)
+                .map(Block::text)
+                .collect(Collectors.joining("\n"));
     }
 }
